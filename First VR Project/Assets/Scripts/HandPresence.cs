@@ -9,6 +9,8 @@ public class HandPresence : MonoBehaviour
     private List<InputDevice> devices;
     // Declare new set of input device characteristics
     private InputDeviceCharacteristics rightControllerCharacteristics;
+    // Declare targetDevice variable
+    private InputDevice targetDevice;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,11 +26,21 @@ public class HandPresence : MonoBehaviour
         {
             Debug.Log(device.name + device.characteristics);
         }
+
+        // If devices is greater than zero set targetDevice to first device
+        if(devices.Count > 0)
+        {
+            targetDevice = devices[0];
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        targetDevice.TryGetFeatureValue(CommonUsages.primaryButton, out bool primaryButtonValue);
+        if (primaryButtonValue)
+        {
+            Debug.Log("Pressing Primary Button");
+        }
     }
 }
