@@ -5,6 +5,8 @@ using UnityEngine.XR;
 
 public class HandPresence : MonoBehaviour
 {
+    // Declare new list of game objects
+    public List<GameObject> controllerPrefabs;
     // Declare new list of devices
     private List<InputDevice> devices;
     // Declare new set of input device characteristics
@@ -38,21 +40,21 @@ public class HandPresence : MonoBehaviour
     void Update()
     {
         // Get feature values of primary button, trigger, and d pad of target device
-        targetDevice.TryGetFeatureValue(CommonUsages.primaryButton, out bool primaryButtonValue);
-        targetDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue);
-        targetDevice.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 primary2DAxisValue);
+        
+        
+        
 
-        // Check to see if button is pressed and log according to each button
-        if (primaryButtonValue)
+        // Check to see the feature value and if button is pressed and then log
+        if (targetDevice.TryGetFeatureValue(CommonUsages.primaryButton, out bool primaryButtonValue) && primaryButtonValue)
         {
             Debug.Log("Pressing Primary Button");
         }
         
-        if (triggerValue > 0.1f)
+        if (targetDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue) && triggerValue > 0.1f)
         {
             Debug.Log("Pressing Trigger " + triggerValue);
         }
-        if (primary2DAxisValue != Vector2.zero)
+        if (targetDevice.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 primary2DAxisValue) && primary2DAxisValue != Vector2.zero)
         {
             Debug.Log("Primary Touchpad " + primary2DAxisValue);
         }
