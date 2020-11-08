@@ -37,10 +37,24 @@ public class HandPresence : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Get feature values of primary button, trigger, and d pad of target device
         targetDevice.TryGetFeatureValue(CommonUsages.primaryButton, out bool primaryButtonValue);
+        targetDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue);
+        targetDevice.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 primary2DAxisValue);
+
+        // Check to see if button is pressed and log according to each button
         if (primaryButtonValue)
         {
             Debug.Log("Pressing Primary Button");
+        }
+        
+        if (triggerValue > 0.1f)
+        {
+            Debug.Log("Pressing Trigger " + triggerValue);
+        }
+        if (primary2DAxisValue != Vector2.zero)
+        {
+            Debug.Log("Primary Touchpad " + primary2DAxisValue);
         }
     }
 }
