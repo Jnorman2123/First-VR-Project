@@ -603,7 +603,7 @@ MonoBehaviour:
   m_ActivateUsage: 2
   m_UIPressUsage: 2
   m_AxisToPressThreshold: 0.1
-  m_ModelPrefab: {fileID: 7186496418529432545, guid: c6878417ae251934c98095af2246a9ad,
+  m_ModelPrefab: {fileID: 2958959485485640890, guid: 31a8cb63007ade14986d8919ce00f6d8,
     type: 3}
   m_ModelTransform: {fileID: 0}
   m_AnimateModel: 0
