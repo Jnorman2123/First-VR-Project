@@ -20,6 +20,9 @@ public class HandPresence : MonoBehaviour
     private GameObject prefab;
     private GameObject spawnedController;
     private GameObject spawnedHandModel;
+    // Declare new animator variable
+    private Animator handAnimator;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -52,8 +55,9 @@ public class HandPresence : MonoBehaviour
                 Debug.Log("Did not find corresponding controller model");
                 spawnedController = Instantiate(controllerPrefabs[0], transform);
             }
-            // Spawn a hand model prefab
+            // Spawn a hand model prefab and set the hand animator variable
             spawnedHandModel = Instantiate(handModelPrefab, transform);
+            handAnimator = spawnedHandModel.GetComponent<Animator>();
         }
     }
 
@@ -72,6 +76,31 @@ public class HandPresence : MonoBehaviour
             // Deactivate controller model and activate hand model
             spawnedHandModel.SetActive(true);
             spawnedController.SetActive(false);
+            // Call the update hand animation function
+            UpdateHandAnimation();
+        }
+    }
+
+    // Create new function to update the hand animator when grip or trigger is pressed
+    void UpdateHandAnimation()
+    {
+        // If trigger is pressed set the hand animator trigger value to current value else set to zero
+        if (targetDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue))
+        {
+            handAnimator.SetFloat("Trigger", triggerValue);
+        } 
+        else
+        {
+            handAnimator.SetFloat("Trigger", 0);
+        }
+        // If grip is pressed set the hand animator grip value to current value else set to zero
+        if (targetDevice.TryGetFeatureValue(CommonUsages.grip, out float gripValue))
+        {
+            handAnimator.SetFloat("Grip", gripValue);
+        }
+        else
+        {
+            handAnimator.SetFloat("Grip", 0);
         }
     }
 }
