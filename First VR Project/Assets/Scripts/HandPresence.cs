@@ -26,6 +26,13 @@ public class HandPresence : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Call the try initialize function
+        TryInitialize();
+    }
+
+    // Create function to check if a device has been initialized and then spawn prefab for device
+    void TryInitialize()
+    {
         // Set devices to new list of input devices
         devices = new List<InputDevice>();
 
@@ -33,13 +40,13 @@ public class HandPresence : MonoBehaviour
         InputDevices.GetDevicesWithCharacteristics(controllerCharacteristics, devices);
 
         // Loop through devices and debug log each device name and characteristics
-        foreach(var device in devices)
+        foreach (var device in devices)
         {
             Debug.Log(device.name + device.characteristics);
         }
 
         // If devices is greater than zero set targetDevice to first device
-        if(devices.Count > 0)
+        if (devices.Count > 0)
         {
             targetDevice = devices[0];
             // Set prefab to controller if controller name is equal to targetDevice name
@@ -64,20 +71,28 @@ public class HandPresence : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // If show controller is true display a controller otherwise show hand model
-        if (showController)
+        // If device is not valid try to initialize it else determine if displaying hand or controller model
+        if (!targetDevice.isValid)
         {
-            // Deactivate hand model and activate controller
-            spawnedHandModel.SetActive(false);
-            spawnedController.SetActive(true);
+            TryInitialize();
         }
         else
         {
-            // Deactivate controller model and activate hand model
-            spawnedHandModel.SetActive(true);
-            spawnedController.SetActive(false);
-            // Call the update hand animation function
-            UpdateHandAnimation();
+            // If show controller is true display a controller otherwise show hand model
+            if (showController)
+            {
+                // Deactivate hand model and activate controller
+                spawnedHandModel.SetActive(false);
+                spawnedController.SetActive(true);
+            }
+            else
+            {
+                // Deactivate controller model and activate hand model
+                spawnedHandModel.SetActive(true);
+                spawnedController.SetActive(false);
+                // Call the update hand animation function
+                UpdateHandAnimation();
+            }
         }
     }
 
