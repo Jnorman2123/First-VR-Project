@@ -5,8 +5,11 @@ using UnityEngine.XR;
 
 public class HandPresence : MonoBehaviour
 {
-    // Declare new list of game objects
+    // New boolean variable to determine if controller should be shown 
+    public bool showController = false;
+    // Declare new list of game objects and new hand prefab object
     public List<GameObject> controllerPrefabs;
+    public GameObject handModelPrefab;
     // Declare new list of devices
     private List<InputDevice> devices;
     // Declare new set of input device characteristics
@@ -16,6 +19,7 @@ public class HandPresence : MonoBehaviour
     // Declare new game object variables
     private GameObject prefab;
     private GameObject spawnedController;
+    private GameObject spawnedHandModel;
     // Start is called before the first frame update
     void Start()
     {
@@ -48,30 +52,26 @@ public class HandPresence : MonoBehaviour
                 Debug.Log("Did not find corresponding controller model");
                 spawnedController = Instantiate(controllerPrefabs[0], transform);
             }
+            // Spawn a hand model prefab
+            spawnedHandModel = Instantiate(handModelPrefab, transform);
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Get feature values of primary button, trigger, and d pad of target device
-        
-        
-        
-
-        // Check to see the feature value and if button is pressed and then log
-        if (targetDevice.TryGetFeatureValue(CommonUsages.primaryButton, out bool primaryButtonValue) && primaryButtonValue)
+        // If show controller is true display a controller otherwise show hand model
+        if (showController)
         {
-            Debug.Log("Pressing Primary Button");
+            // Deactivate hand model and activate controller
+            spawnedHandModel.SetActive(false);
+            spawnedController.SetActive(true);
         }
-        
-        if (targetDevice.TryGetFeatureValue(CommonUsages.trigger, out float triggerValue) && triggerValue > 0.1f)
+        else
         {
-            Debug.Log("Pressing Trigger " + triggerValue);
-        }
-        if (targetDevice.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 primary2DAxisValue) && primary2DAxisValue != Vector2.zero)
-        {
-            Debug.Log("Primary Touchpad " + primary2DAxisValue);
+            // Deactivate controller model and activate hand model
+            spawnedHandModel.SetActive(true);
+            spawnedController.SetActive(false);
         }
     }
 }
