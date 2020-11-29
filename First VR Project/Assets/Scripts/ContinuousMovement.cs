@@ -13,6 +13,9 @@ public class ContinuousMovement : MonoBehaviour
     private CharacterController character;
     private XRRig rig;
     public float speed = 1.0f;
+    // gravity and fallingSpeed variables
+    public float gravity = 9.81f;
+    public float fallingSpeed;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,7 +38,11 @@ public class ContinuousMovement : MonoBehaviour
         // new quaternion for head rotation
         Quaternion headYaw = Quaternion.Euler(0, rig.cameraGameObject.transform.eulerAngles.y, 0);
         //  new Vector3 for character movement based on user input
-        Vector3 direction = new Vector3(inputAxis.x, 0, inputAxis.y);
+        Vector3 direction = headYaw * new Vector3(inputAxis.x, 0, inputAxis.y);
         character.Move(direction * Time.fixedDeltaTime * speed);
+        // set fallingSpeed
+        fallingSpeed = -10;
+        // player fall by fallingSpeed
+        character.Move(Vector3.up * fallingSpeed * Time.fixedDeltaTime);
     }
 }
