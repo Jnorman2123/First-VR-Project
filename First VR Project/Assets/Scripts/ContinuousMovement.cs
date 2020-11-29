@@ -30,6 +30,7 @@ public class ContinuousMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //  new Vector3 for character movement based on user input
         Vector3 direction = new Vector3(inputAxis.x, 0, inputAxis.y);
         character.Move(direction * Time.fixedDeltaTime * speed);
     }
